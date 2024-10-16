@@ -5,29 +5,42 @@ import { useGetOrdersQuery } from '../state/pizzaApi';
 import { setFilter } from '../state/filterSlice';
 
 export default function OrderList() {
-  const { data: orders = [], isLoading, error } = useGetOrdersQuery();
+  const {
+    data: orders = [],
+    isLoading: ordersLoading,
+    error: ordersError,
+  } = useGetOrdersQuery();
+
   const dispatch = useDispatch();
   const filter = useSelector((state) => state.sizeFilter);
+
+  if (ordersLoading) return <p>Loading orders...</p>;
+  if (ordersError) return <p>Error loading orders.</p>;
 
   const filteredOrders = orders.filter(
     (order) => filter === 'All' || order.size === filter
   );
 
-  if (isLoading) return <p>Loading orders...</p>;
-  if (error) return <p>Error loading orders.</p>;
+  console.log('Fetched Orders:', orders);
 
   return (
     <div id="orderList">
       <h2>Pizza Orders</h2>
       <ol>
-        {filteredOrders.map((order) => (
-          <li key={order.id}>
-            <div>
-              {order.fullName} - Size: {order.size} - Toppings:{' '}
-              {order.toppings.join(', ')}
-            </div>
-          </li>
-        ))}
+        {filteredOrders.map((order) => {
+          const toppingsCount = Array.isArray(order.toppings) ? order.toppings.length : 0;
+
+          return (
+            <li key={order.id}>
+              <div>
+                {order.customer || 'Unknown'} ordered a size {order.size} with{' '}
+                {toppingsCount > 0
+                  ? `${toppingsCount} ${toppingsCount === 1 ? 'topping' : 'toppings'}`
+                  : 'no toppings'}
+              </div>
+            </li>
+          );
+        })}
       </ol>
       <div id="sizeFilters">
         Filter by size:
