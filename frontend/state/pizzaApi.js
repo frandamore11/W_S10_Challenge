@@ -1,4 +1,4 @@
-// pizzaApi.js
+// state/pizzaApi.js
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
 // Define the API slice
