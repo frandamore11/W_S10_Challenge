@@ -60,6 +60,8 @@ export default function PizzaForm() {
           <label htmlFor="fullName">Full Name</label>
           <br />
           <input
+            data-testid="fullNameInput"
+            id="fullName"
             name="fullName"
             placeholder="Type full name"
             type="text"
@@ -74,6 +76,8 @@ export default function PizzaForm() {
           <label htmlFor="size">Size</label>
           <br />
           <select
+            data-testid="sizeSelect"
+            id="size"
             name="size"
             value={formState.size}
             onChange={handleChange}
@@ -89,6 +93,7 @@ export default function PizzaForm() {
       <div className="input-group">
         <label>
           <input
+            data-testid="checkPepperoni"
             name="1"
             type="checkbox"
             checked={formState['1']}
@@ -99,6 +104,7 @@ export default function PizzaForm() {
         </label>
         <label>
           <input
+            data-testid="checkGreenpeppers"
             name="2"
             type="checkbox"
             checked={formState['2']}
@@ -109,6 +115,7 @@ export default function PizzaForm() {
         </label>
         <label>
           <input
+            data-testid="checkPineapple"
             name="3"
             type="checkbox"
             checked={formState['3']}
@@ -119,6 +126,7 @@ export default function PizzaForm() {
         </label>
         <label>
           <input
+            data-testid="checkMushrooms"
             name="4"
             type="checkbox"
             checked={formState['4']}
@@ -129,6 +137,7 @@ export default function PizzaForm() {
         </label>
         <label>
           <input
+            data-testid="checkHam"
             name="5"
             type="checkbox"
             checked={formState['5']}
