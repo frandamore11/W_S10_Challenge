@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { useCreateOrderMutation } from '../state/pizzaApi';
 
 const initialFormState = {
-  customer: '',
+  fullName: '',
   size: '',
   '1': false,
   '2': false,
@@ -28,11 +28,11 @@ export default function PizzaForm() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const { customer, size, ...toppings } = formState;
+    const { fullName, size, ...toppings } = formState;
     const selectedToppings = Object.keys(toppings).filter((key) => toppings[key]);
 
     const orderData = {
-      customer,
+      fullName,
       size,
       toppings: selectedToppings,
     };
@@ -57,15 +57,15 @@ export default function PizzaForm() {
 
       <div className="input-group">
         <div>
-          <label htmlFor="customer">Full Name</label>
+          <label htmlFor="fullName">Full Name</label>
           <br />
           <input
             data-testid="fullNameInput"
-            id="customer"
-            name="customer"
+            id="fullName"
+            name="fullName"
             placeholder="Type full name"
             type="text"
-            value={formState.customer}
+            value={formState.fullName}
             onChange={handleChange}
           />
         </div>
