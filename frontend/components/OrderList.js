@@ -2,13 +2,12 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useGetOrdersQuery } from '../state/pizzaApi';
+import { setFilter } from '../state/filterSlice';
 
 export default function OrderList() {
   const { data: orders = [], isLoading, error } = useGetOrdersQuery();
   const dispatch = useDispatch();
-
-  // We'll handle the size filter in Task 5
-  const filter = useSelector((state) => state.sizeFilter || 'All');
+  const filter = useSelector((state) => state.sizeFilter);
 
   const filteredOrders = orders.filter(
     (order) => filter === 'All' || order.size === filter
@@ -30,7 +29,22 @@ export default function OrderList() {
           </li>
         ))}
       </ol>
-      {/* Size filter will be implemented in Task 5 */}
+      <div id="sizeFilters">
+        Filter by size:
+        {['All', 'S', 'M', 'L'].map((size) => {
+          const className = `button-filter${size === filter ? ' active' : ''}`;
+          return (
+            <button
+              data-testid={`filterBtn${size}`}
+              className={className}
+              key={size}
+              onClick={() => dispatch(setFilter(size))}
+            >
+              {size}
+            </button>
+          );
+        })}
+      </div>
     </div>
   );
 }

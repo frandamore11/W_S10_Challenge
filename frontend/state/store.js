@@ -1,13 +1,13 @@
 // state/store.js
 import { configureStore } from '@reduxjs/toolkit';
 import { pizzaApi } from './pizzaApi';
+import filterReducer from './filterSlice';
 
 export const resetStore = () =>
   configureStore({
     reducer: {
-      // Add the API reducer
       [pizzaApi.reducerPath]: pizzaApi.reducer,
-      // You can add other reducers here
+      sizeFilter: filterReducer,
     },
     middleware: (getDefaultMiddleware) =>
       getDefaultMiddleware().concat(pizzaApi.middleware),
