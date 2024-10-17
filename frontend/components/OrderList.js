@@ -13,9 +13,19 @@ export default function OrderList() {
 
   const dispatch = useDispatch();
   const filter = useSelector((state) => state.sizeFilter);
+  console.log('Current filter state:', filter);
 
-  if (ordersLoading) return <p>Loading orders...</p>;
-  if (ordersError) return <p>Error loading orders.</p>;
+  if (ordersLoading) {
+    console.log('Orders are loading...');
+    return <p>Loading orders...</p>
+  }
+
+  if (ordersError) {
+    console.log('Error loading orders:', ordersError);
+    return <p>Error loading orders.</p>
+  }
+
+  console.log('Fetched Orders:', orders);
 
   const filteredOrders = orders.filter(
     (order) => filter === 'All' || order.size === filter
