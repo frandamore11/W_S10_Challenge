@@ -1,4 +1,3 @@
-// components/OrderList.js
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useGetOrdersQuery } from '../state/pizzaApi';
@@ -13,29 +12,43 @@ export default function OrderList() {
 
   const dispatch = useDispatch();
   const filter = useSelector((state) => state.sizeFilter);
-  console.log('Current filter state:', filter);
 
-  if (ordersLoading) {
-    console.log('Orders are loading...');
-    return <p>Loading orders...</p>
-  }
-
-  if (ordersError) {
-    console.log('Error loading orders:', ordersError);
-    return <p>Error loading orders.</p>
-  }
-
-  console.log('Fetched Orders:', orders);
-
-  const filteredOrders = orders.filter(
-    (order) => filter === 'All' || order.size === filter
+  // Render filter buttons even if loading or error occurs
+  const renderFilters = () => (
+    <div id="sizeFilters">
+      Filter by size:
+      {['All', 'S', 'M', 'L'].map((size) => {
+        const className = `button-filter${size === filter ? ' active' : ''}`;
+        return (
+          <button
+            data-testid={`filterBtn${size}`}
+            className={className}
+            key={size}
+            onClick={() => dispatch(setFilter(size))}
+          >
+            {size}
+          </button>
+        );
+      })}
+    </div>
   );
 
-  console.log('Fetched Orders:', orders);
+  // Ensure filters are always rendered
+  const renderOrders = () => {
+    if (ordersLoading) {
+      return <p>Loading orders...</p>;
+    }
 
-  return (
-    <div id="orderList">
-      <h2>Pizza Orders</h2>
+    if (ordersError) {
+      return <p>Error loading orders.</p>;
+    }
+
+    // Apply the filter to the orders list
+    const filteredOrders = orders.filter(
+      (order) => filter === 'All' || order.size === filter
+    );
+
+    return (
       <ol>
         {filteredOrders.map((order) => {
           const toppingsCount = Array.isArray(order.toppings) ? order.toppings.length : 0;
@@ -52,22 +65,14 @@ export default function OrderList() {
           );
         })}
       </ol>
-      <div id="sizeFilters">
-        Filter by size:
-        {['All', 'S', 'M', 'L'].map((size) => {
-          const className = `button-filter${size === filter ? ' active' : ''}`;
-          return (
-            <button
-              data-testid={`filterBtn${size}`}
-              className={className}
-              key={size}
-              onClick={() => dispatch(setFilter(size))}
-            >
-              {size}
-            </button>
-          );
-        })}
-      </div>
+    );
+  };
+
+  return (
+    <div id="orderList">
+      <h2>Pizza Orders</h2>
+      {renderOrders()}
+      {renderFilters()} {/* Filters rendered with orders */}
     </div>
   );
 }
